@@ -7,9 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AudioToolbox/AudioToolbox.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface ViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIButton *btn;
 
+- (IBAction)rokuon:(id)sender;
 
+- (IBAction)saisei:(id)sender;
 @end
 

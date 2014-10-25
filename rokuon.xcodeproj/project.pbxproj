@@ -14,6 +14,8 @@
 		8736B54119FA84D700560058 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8736B54019FA84D700560058 /* Images.xcassets */; };
 		8736B54419FA84D700560058 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8736B54219FA84D700560058 /* LaunchScreen.xib */; };
 		8736B55019FA84D700560058 /* rokuonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8736B54F19FA84D700560058 /* rokuonTests.m */; };
+		8736B55A19FA850700560058 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736B55919FA850700560058 /* AVFoundation.framework */; };
+		8736B55C19FA851A00560058 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736B55B19FA851A00560058 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		8736B54919FA84D700560058 /* rokuonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = rokuonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8736B54E19FA84D700560058 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8736B54F19FA84D700560058 /* rokuonTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = rokuonTests.m; sourceTree = "<group>"; };
+		8736B55919FA850700560058 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		8736B55B19FA851A00560058 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +51,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8736B55C19FA851A00560058 /* AudioToolbox.framework in Frameworks */,
+				8736B55A19FA850700560058 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +69,8 @@
 		8736B52719FA84D700560058 = {
 			isa = PBXGroup;
 			children = (
+				8736B55B19FA851A00560058 /* AudioToolbox.framework */,
+				8736B55919FA850700560058 /* AVFoundation.framework */,
 				8736B53219FA84D700560058 /* rokuon */,
 				8736B54C19FA84D700560058 /* rokuonTests */,
 				8736B53119FA84D700560058 /* Products */,
