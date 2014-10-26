@@ -33,6 +33,7 @@
     //録音状態でないかどうか
     if (rokuonStarting == NO) {
     audioSession = [AVAudioSession sharedInstance];
+        [audioSession setCategory:AVAudioSessionCategoryRecord error:nil];
     NSError *error = nil;
     // 使用している機種が録音に対応しているか
     if ([audioSession inputIsAvailable]) {
@@ -46,22 +47,34 @@
     if(error){
         NSLog(@"audioSession: %@ %ld %@", [error domain], [error code], [[error userInfo] description]);
     }
-    
+        NSDictionary *dic;
+        //AVEncoderAudioQualityKey オーディオ品質を設定するキー?
+        //AVEncoderBitRateKey オーディオビットレートを設定するキー?
+        //AVSampleRateKey 周波数(ヘルツ)を設定するキー?(このキーの値が小さいほどデータのサイズは小さくなる?)
+        //AVNumberOfChannelsKey　チャネルの数を設定するキー?
+        dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:AVAudioQualityLow],AVEncoderAudioQualityKey,
+               [NSNumber numberWithInt:16],
+               AVEncoderBitRateKey,
+               [NSNumber numberWithInt: 1],
+               AVNumberOfChannelsKey,
+               [NSNumber numberWithFloat:1000.0],
+               AVSampleRateKey,
+               nil];
     // 録音ファイルパス
     NSArray *filePaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                              NSUserDomainMask,YES);
     NSString *documentDir = [filePaths objectAtIndex:0];
         //wavファイルとして保存する
-    NSString *path = [documentDir stringByAppendingPathComponent:@"rec.wav"];
+    NSString *path = [documentDir stringByAppendingPathComponent:@"rec.caf"];
     NSURL *recordingURL = [NSURL fileURLWithPath:path];
-    avRecorder = [[AVAudioRecorder alloc] initWithURL:recordingURL settings:nil error:&error];
+    avRecorder = [[AVAudioRecorder alloc] initWithURL:recordingURL settings:dic error:&error];
     
     if(error){
         NSLog(@"patherror = %@",error);
         return;
     }
         //録音開始
-
+        [avRecorder prepareToRecord];
     [avRecorder record];
     rokuonStarting = YES;
         //ボタンのタイトルを録音ストップとする
@@ -77,7 +90,7 @@
         NSArray *filePaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                                  NSUserDomainMask,YES);
         NSString *documentDir = [filePaths objectAtIndex:0];
-        NSString *path = [documentDir stringByAppendingPathComponent:@"rec.wav"];
+        NSString *path = [documentDir stringByAppendingPathComponent:@"rec.caf"];
         //パスからデータを取得
         NSData *musicdata = [[NSData alloc]initWithContentsOfFile:path];
         //ファイルをサーバーにアップするためのプログラムのURLを生成
@@ -95,12 +108,13 @@
         //bodyの最初にバウンダリ文字列(仕切線)を追加
         [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         //サーバー側に送るファイルの項目名をsample
-        //送るファイル名をsaple.mp3と設定
-        [body appendData:[@"Content-Disposition: form-data; name=\"sample\"; filename=\"sample.mp3\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        //送るファイル名をexample.cafと設定
+        [body appendData:[@"Content-Disposition: form-data; name=\"sample\"; filename=\"example.caf\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
         //送るファイルのデータのタイプを設定する情報を追加
-        [body appendData:[@"Content-Type: audio/mpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"Content-Type: audio/x-caf\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
         //音楽ファイルのデータを追加
         [body appendData:musicdata];
+        NSLog(@"録音のデータサイズ%ldバイト",musicdata.length);
         //最後にバウンダリ文字列を追加
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         //ヘッダContent-typeに情報を追加
@@ -129,7 +143,7 @@
                                                              NSUserDomainMask,YES);
     NSString *documentDir = [filePaths objectAtIndex:0];
     //rec.wavファイルがあるパスの文字列を格納
-    NSString *path = [documentDir stringByAppendingPathComponent:@"rec.wav"];
+    NSString *path = [documentDir stringByAppendingPathComponent:@"rec.caf"];
     NSURL *recordingURL = [NSURL fileURLWithPath:path];
     
     avPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:recordingURL error:nil];
